@@ -1,4 +1,4 @@
-class MyRegressor:
+class MyLinearRegressor:
     def __init__(self) -> None:
         self.W = []
         self.X = []
@@ -18,11 +18,11 @@ class MyRegressor:
     def train(self, training_input_set, training_output_set):
         self.X = [[1] + x.copy() for x in training_input_set]
         XT = self.__transpose_matrix(self.X)
-        P = self.__product(XT, self.X)
-        P_Invers = self.__inversa(P)
-        A = self.__product(P_Invers, XT)
+        P = self.__product_matrix(XT, self.X)
+        P_Inverse = self.__inverse_matrix(P)
+        A = self.__product_matrix(P_Inverse, XT)
         Y = [[el] for el in training_output_set.copy()]
-        self.W = self.__product(A, Y)
+        self.W = self.__product_matrix(A, Y)
 
     def __transpose_matrix(self, A):
         n, m = len(A), len(A[-1])
@@ -32,7 +32,7 @@ class MyRegressor:
                 XT[j].append(A[i][j])
         return XT
 
-    def __product(self, A, B):
+    def __product_matrix(self, A, B):
         nr_lines = len(A)
         nr_cols = len(B[-1])
         prod = []
@@ -42,7 +42,7 @@ class MyRegressor:
                 prod[i].append(sum([A[i][k] * B[k][j] for k in range(len(A[i]))]))
         return prod
 
-    def __elimLinCol(self, A, i: int, j: int):
+    def __eliminate_line_column(self, A, i: int, j: int):
         B = [A[k].copy() for k in range(len(A)) if k != i]
         for line in B:
             line.pop(j)
@@ -51,9 +51,9 @@ class MyRegressor:
     def __determinant(self, A):
         if len(A) == 1:
             return A[-1][-1]
-        return sum(((-1) ** j) * A[0][j] * self.__determinant(self.__elimLinCol(A, 0, j)) for j in range(len(A[0])))
+        return sum(((-1) ** j) * A[0][j] * self.__determinant(self.__eliminate_line_column(A, 0, j)) for j in range(len(A[0])))
 
-    def __inversa(self, A):
+    def __inverse_matrix(self, A):
         dA = self.__determinant(A)
         B = []
         nr_lines = len(A)
@@ -61,5 +61,5 @@ class MyRegressor:
         for i in range(nr_lines):
             B.append([])
             for j in range(nr_cols):
-                B[i].append(((-1) ** (i + j)) * self.__determinant(self.__elimLinCol(A, i, j)) / dA)
+                B[i].append(((-1) ** (i + j)) * self.__determinant(self.__eliminate_line_column(A, i, j)) / dA)
         return B
