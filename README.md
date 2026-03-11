@@ -1,1 +1,2 @@
 # Artificial-Intelligence-Laboratories
+In the Artificial Intelligence Laboratories, we explored various aspects of artificial intelligence. Specifically, we studied data processing, **Optical Character Recognition (OCR)**, which is essential for text recognition, along with other key techniques such as **object classification/detection**, **regression (LMSE)**, **regression/classification (SGD)**. Additionally, we have developed **Artificial Neural Networks (ANN)**, **Convolutional Neural Networks (CNN)**, and explored **Generative AI**, with a focus on text generation.
